@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
-    "io/ioutil"
 )
 
 func main() {
@@ -14,6 +14,6 @@ func main() {
 	defer resp.Body.Close()
 	fmt.Printf("%#v\n", resp.Body)
 
-    bytes_buffer , err := ioutil.ReadAll(resp.Body)
-    fmt.Printf("%T\n", string(bytes_buffer))
+	bytes_buffer, err := ioutil.ReadAll(resp.Body)
+	fmt.Printf("%T\n", string(bytes_buffer))
 }
