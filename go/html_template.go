@@ -1,9 +1,12 @@
 package main
 
 import (
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 )
 
 type Gopher struct {
@@ -11,8 +14,6 @@ type Gopher struct {
 }
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-    log.Print("/hello-gopher")
-
 	var gophername string
 	gophername = r.URL.Query().Get("gophername")
 	if gophername == "" {
@@ -23,16 +24,16 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderTemplate(w http.ResponseWriter, templateFile string, templateData interface{}) {
-    t, err := template.ParseFiles(templateFile)
-    if err != nil {
-        log.Fatal("Error encountered while parsing the template: ", err)
-    }
-    t.Execute(w, templateData)
+	t, err := template.ParseFiles(templateFile)
+	if err != nil {
+		log.Fatal("Error encountered while parsing the template: ", err)
+	}
+	t.Execute(w, templateData)
 }
 
 func main() {
-    log.Print("Server is running at port 8080")
-
-    http.HandleFunc("/hello-gopher", helloHandler)
-    http.ListenAndServe(":8080", nil)
+	r := mux.NewRouter()
+	r.HandleFunc("/hello-gopher", helloHandler)
+	http.Handle("/", handlers.LoggingHandler(os.Stdout, r))
+	http.ListenAndServe(":8080", nil)
 }
