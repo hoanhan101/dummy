@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "text/template"
-	"fmt"
+	"text/template"
+    "os"
 )
 
 type Inventory struct {
@@ -12,5 +12,14 @@ type Inventory struct {
 
 func main() {
 	sweaters := Inventory{Material: "wood", Count: 17}
-	fmt.Println(sweaters)
+
+    tmpl, err := template.New("test").Parse("{{.Count}} items are made of {{.Material}}")
+    if err != nil {
+        panic(err)
+    }
+
+    err = tmpl.Execute(os.Stdout, sweaters)
+    if err != nil {
+        panic(err)
+    }
 }
