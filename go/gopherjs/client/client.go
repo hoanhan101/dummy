@@ -20,6 +20,11 @@ func run() {
 	alertButtonDOM.AddEventListener("click", false, func(event dom.Event) {
 		DisplayAlertMessageDOM(messageInput.Value)
 	})
+
+	lowercaseText := d.GetElementByID("lowercaseText").(*dom.HTMLButtonElement)
+	lowercaseText.AddEventListener("click", false, func(event dom.Event) {
+		go lowercaseTextTransformer()
+	})
 }
 
 func main() {
